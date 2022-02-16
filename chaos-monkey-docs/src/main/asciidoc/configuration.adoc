@@ -6,6 +6,7 @@ You can decide which attacks you want to run and which parts of your application
 
 === Properties
 
+.Main
 |===
 |Property |Description |Values |Default
 
@@ -13,12 +14,22 @@ You can decide which attacks you want to run and which parts of your application
 |Determine whether should execute or not
 |TRUE or FALSE
 |FALSE
+|===
+
+.Assaults
+|===
+|Property |Description |Values |Default
 
 |chaos.monkey.assaults.level
 |How many requests are to be attacked.
 1 each request, 5 each 5th request is attacked
 |1-10000
 |1
+
+|chaos.monkey.assaults.deterministic
+|Whether the level should be used as a deterministic value (attack every x requests) or a chance (on average, 1 in x requests will be attacked)
+|TRUE or FALSE
+|FALSE
 
 |chaos.monkey.assaults.latencyRangeStart
 |Minimum latency in ms added to the request
@@ -42,7 +53,8 @@ You can decide which attacks you want to run and which parts of your application
 
 |chaos.monkey.assaults.exception
 |Custom RuntimeException or default RuntimeException
-|de.codecentric.spring.boot.chaos.monkey.configuration.AssaultException
+|de.codecentric.spring.boot.chaos.
+monkey.configuration.AssaultException
 |java.lang.RuntimeException("Chaos Monkey - RuntimeException"")
 
 |chaos.monkey.assaults.killApplicationActive
@@ -54,31 +66,6 @@ You can decide which attacks you want to run and which parts of your application
 |Cron expression like `*/1 * * * * ?` can be set to enable chaos monkey AppKiller assault on a schedule
 |Any valid cron expression (or OFF)
 |OFF
-
-|chaos.monkey.watcher.controller
-|Controller watcher active
-|TRUE or FALSE
-|FALSE
-
-|chaos.monkey.watcher.restController
-|RestController watcher active
-|TRUE or FALSE
-|FALSE
-
-|chaos.monkey.watcher.service
-|Service watcher active
-|TRUE or FALSE
-|FALSE
-
-|chaos.monkey.watcher.repository
-|Repository watcher active
-|TRUE or FALSE
-|FALSE
-
-|chaos.monkey.watcher.component
-|Component watcher active
-|TRUE or FALSE
-|FALSE
 
 |chaos.monkey.assaults.memoryActive
 |Memory assault active
@@ -126,7 +113,7 @@ You can decide which attacks you want to run and which parts of your application
 |0.9
 
 |chaos.monkey.assaults.cpu.cron.expression
-|Cron expression like `*/1 * * * * ?` can be set to enable chaos monkey cpu assault on a schedule
+|**DEPRECATED** Cron expression like `*/1 * * * * ?` can be set to enable chaos monkey cpu assault on a schedule
 |Any valid cron expression (or OFF)
 |OFF
 
@@ -134,4 +121,45 @@ You can decide which attacks you want to run and which parts of your application
 |Cron expression like `*/1 * * * * ?` can be set to enable chaos monkey runtime assaults on a schedule
 |Any valid cron expression (or OFF)
 |OFF
+
+|chaos.monkey.assaults.watchedCustomServices
+|Limits watched packages/classes/methods
+|List of fully qualified packages, class and/or method names
+|Empty list
+
+|===
+
+.Watcher
+|===
+|Property |Description |Values |Default
+
+|chaos.monkey.watcher.controller
+|Controller watcher active
+|TRUE or FALSE
+|FALSE
+
+|chaos.monkey.watcher.restController
+|RestController watcher active
+|TRUE or FALSE
+|FALSE
+
+|chaos.monkey.watcher.service
+|Service watcher active
+|TRUE or FALSE
+|FALSE
+
+|chaos.monkey.watcher.repository
+|Repository watcher active
+|TRUE or FALSE
+|FALSE
+
+|chaos.monkey.watcher.component
+|Component watcher active
+|TRUE or FALSE
+|FALSE
+
+|chaos.monkey.watcher.beans
+|Bean watcher for given beans
+|List of bean names
+|Empty list
 |===

@@ -159,7 +159,7 @@ public class ChaosMonkeyConfiguration {
   }
 
   @Bean
-  public ChaosMonkeyScheduler scheduler(
+  public ChaosMonkeyScheduler chaosMonkeyScheduler(
       @Qualifier(CHAOS_MONKEY_TASK_SCHEDULER) TaskScheduler scheduler,
       List<ChaosMonkeyRuntimeAssault> assaults) {
     ScheduledTaskRegistrar registrar = new ScheduledTaskRegistrar();
@@ -226,6 +226,14 @@ public class ChaosMonkeyConfiguration {
   public SpringBootHealthIndicatorAspect springBootHealthIndicatorAspect(
       ChaosMonkeyRequestScope chaosMonkeyRequestScope) {
     return new SpringBootHealthIndicatorAspect(chaosMonkeyRequestScope, watcherProperties);
+  }
+
+  @Bean
+  @DependsOn("chaosMonkeyRequestScope")
+  public ChaosMonkeyBeanPostProcessor chaosMonkeyBeanPostProcessor(
+      ChaosMonkeyRequestScope chaosMonkeyRequestScope) {
+    return new ChaosMonkeyBeanPostProcessor(
+        watcherProperties, chaosMonkeyRequestScope, publisher());
   }
 
   @Bean

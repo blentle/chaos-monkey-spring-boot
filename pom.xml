@@ -22,7 +22,7 @@
 
   <properties>
     <!-- project version -->
-    <revision>2.5.4-SNAPSHOT</revision>
+    <revision>2.5.5-SNAPSHOT</revision>
     <!-- default settings -->
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -35,43 +35,28 @@
     <github.global.server>github</github.global.server>
 
     <!-- spring versions -->
-    <spring-boot.version>2.5.4</spring-boot.version>
-    <spring-cloud.version>2020.0.3</spring-cloud.version>
-    <spring.version>5.3.9</spring.version>
-
-    <!-- spring managed dependency versions,
-    see https://docs.spring.io/spring-boot/docs/${spring-boot.version}/reference/html/dependency-versions.html
-    -->
-    <junit.jupiter.version>5.7.2</junit.jupiter.version>
-    <mockito.version>3.9.0</mockito.version>
-    <lombok.version>1.18.20</lombok.version>
-    <aspectj-weaver.version>1.9.7</aspectj-weaver.version>
-    <jcl-over-slf4j.version>1.7.32</jcl-over-slf4j.version>
-    <reactor-netty.version>1.0.10</reactor-netty.version>
+    <spring-boot.version>2.6.3</spring-boot.version>
+    <spring-cloud.version>2021.0.0</spring-cloud.version>
 
     <!-- dependency versions -->
-    <unleash.version>4.4.0</unleash.version>
-
-    <!-- demo dependencies -->
-    <micrometer.version>1.7.1</micrometer.version>
-    <spring-security.version>5.5.1</spring-security.version>
+    <unleash.version>5.0.3</unleash.version>
 
     <!-- plugin versions-->
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-    <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
     <git-commit-id-plugin.version>4.0.5</git-commit-id-plugin.version>
-    <asciidoctor-maven-plugin.version>2.2.0</asciidoctor-maven-plugin.version>
+    <asciidoctor-maven-plugin.version>2.2.1</asciidoctor-maven-plugin.version>
     <asciidoctor-extensions-spring-boot>0.6.0</asciidoctor-extensions-spring-boot>
-    <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
+    <maven-deploy-plugin.version>3.0.0-M2</maven-deploy-plugin.version>
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-    <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
-    <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+    <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+    <skuzzle-imports-enforcer.version>2.0.0</skuzzle-imports-enforcer.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-    <flatten-maven-plugin.version>1.2.2</flatten-maven-plugin.version>
-    <spotless.plugin.version>2.12.1</spotless.plugin.version>
+    <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
+    <spotless.plugin.version>2.20.0</spotless.plugin.version>
     <google-java-format.version>1.7</google-java-format.version>
   </properties>
 
@@ -180,10 +165,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>${maven-surefire-plugin.version}</version>
         <configuration>
-          <includes>
-            <include>**/*Test*.java</include>
-            <include>**/*Integration*.java</include>
-          </includes>
           <rerunFailingTestsCount>1</rerunFailingTestsCount>
         </configuration>
       </plugin>
@@ -229,6 +210,33 @@
             <goals>
               <goal>check</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven-enforcer-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>de.skuzzle.enforcer</groupId>
+            <artifactId>restrict-imports-enforcer-rule</artifactId>
+            <version>${skuzzle-imports-enforcer.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <RestrictImports>
+                  <reason>Use AssertJ for assertions</reason>
+                  <bannedImport>org.hamcrest.**</bannedImport>
+                </RestrictImports>
+              </rules>
+            </configuration>
           </execution>
         </executions>
       </plugin>
